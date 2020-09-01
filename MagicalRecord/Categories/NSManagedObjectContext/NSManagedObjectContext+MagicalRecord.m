@@ -212,30 +212,6 @@ static id MagicalRecordUbiquitySetupNotificationObserver;
     }
 }
 
-+ (void)rootContextDidSave:(NSNotification *)notification
-{
-    if ([notification object] != [self MR_rootSavingContext])
-    {
-        return;
-    }
-
-    if ([NSThread isMainThread] == NO)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self rootContextDidSave:notification];
-        });
-
-        return;
-    }
-
-    for (NSManagedObject *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey])
-    {
-        [[[self MR_defaultContext] objectWithID:[object objectID]] willAccessValueForKey:nil];
-    }
-
-    [[self MR_defaultContext] mergeChangesFromContextDidSaveNotification:notification];
-}
-
 #pragma mark - Private Methods
 
 + (void) MR_cleanUp
@@ -279,13 +255,6 @@ static id MagicalRecordUbiquitySetupNotificationObserver;
 
     MagicalRecordDefaultContext = moc;
     [MagicalRecordDefaultContext MR_setWorkingName:@"MagicalRecord Default Context"];
-
-    if ((MagicalRecordDefaultContext != nil) && ([self MR_rootSavingContext] != nil)) {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(rootContextDidSave:)
-                                                     name:NSManagedObjectContextDidSaveNotification
-                                                   object:[self MR_rootSavingContext]];
-    }
 
     [moc MR_obtainPermanentIDsBeforeSaving];
     #if TARGET_OS_OSX || TARGET_OS_IOS

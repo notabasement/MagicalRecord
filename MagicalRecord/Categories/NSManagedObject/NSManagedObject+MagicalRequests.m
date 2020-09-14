@@ -133,7 +133,6 @@
     {
         [request setPredicate:searchTerm];
     }
-	[request setFetchBatchSize:[self MR_defaultBatchSize]];
 	
     NSMutableArray* sortDescriptors = [[NSMutableArray alloc] init];
     NSArray* sortKeys = [sortTerm componentsSeparatedByString:@","];

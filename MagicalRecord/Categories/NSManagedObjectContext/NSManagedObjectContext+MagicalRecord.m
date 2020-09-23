@@ -256,6 +256,7 @@ static id MagicalRecordUbiquitySetupNotificationObserver;
     MagicalRecordDefaultContext = moc;
     [MagicalRecordDefaultContext MR_setWorkingName:@"MagicalRecord Default Context"];
 
+    moc.automaticallyMergesChangesFromParent = YES;
     [moc MR_obtainPermanentIDsBeforeSaving];
     #if TARGET_OS_OSX || TARGET_OS_IOS
     if ([MagicalRecord isICloudEnabled])
